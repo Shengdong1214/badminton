@@ -1,6 +1,5 @@
 import requests
 import datetime
-import threading
 import time
 
 '''
@@ -18,11 +17,11 @@ import time
 '''
 
 cookies = {
-    "CASTGC": "TGT-000000-bS8pUVgHL5xJh-Clz5H5JUAThj9slEHyA4NYyKCl8QjhYUQm1gDbNUi5YoNlfQthiD0e4baddbe7695",
-    "PHPSESSID": "ST-0000000-uO-auvf1bg8eU1XVwHHJ-o6oyd8e4baddbe7695",
-    "vjuid": "000000",
-    "vjvd": "00000054ee794bbb4d480527bd6e171d",
-    "vt": "000000"
+    "CASTGC": "TGT-123456-AAXf-aaaa-UHwq5fTxaCJpdXYcSBJIDsARoi1XXuMhg3d-HGzMN2uWGMXVV-EQCCIbkb512782a77f4",
+    "PHPSESSID": "ST-1234567-cFh5mBtJHJLJhNi1vgRFMZWeFLkb512782a77f4",
+    "vjuid": "123456",
+    "vjvd": "123cf984a85f7fde4944b705806d9dcb",
+    "vt": "123907175"
 }
 
 headers = {
@@ -34,45 +33,34 @@ headers = {
     "Accept": "application/json, text/plain, */*"
 }
 
-data1 = ('resource_id=56&code=&remarks=&deduct_num=&data=%5B%7B%22date%22%3A%222025-05-02%22%2C%22period%22%3A1815%2C%22sub_resource_id%22%3A1562%7D%5D&position_data=')
-data2 = ('resource_id=56&code=&remarks=&deduct_num=&data=%5B%7B%22date%22%3A%222025-05-02%22%2C%22period%22%3A1816%2C%22sub_resource_id%22%3A1561%7D%5D&position_data=')
-data_list = [data1, data2]
+data = ('resource_id=56&code=&remarks=&deduct_num=&data=%5B%7B%22date%22%3A%222025-05-06%22%2C%22period%22%3A1815%2C%22sub_resource_id%22%3A1562%7D%2C%7B%22date%22%3A%222025-05-06%22%2C%22period%22%3A1816%2C%22sub_resource_id%22%3A1561%7D%5D&position_data=')
 url = "https://ehall.bjut.edu.cn/site/reservation/launch"
 
-def send_request(data):
-    session.post(url, data=data)
-
-def yuyue_all():
-    threads = []
-    for data in data_list:
-        t = threading.Thread(target=send_request, args=(data,))
-        threads.append(t)
-        t.start()
-        time.sleep(0.05)
-'''
 now = datetime.datetime.now()
-target_time = now.replace(hour=7, minute=0, second=0, microsecond=100)
-#target_time += datetime.timedelta(days=1)
+target_time = now.replace(hour=6, minute=59, second=59, microsecond=900000)
+target_time += datetime.timedelta(days=1)
 
 now = datetime.datetime.now()
-wait_until = now.replace(hour=6, minute=59, second=57, microsecond=0)
-#wait_until += datetime.timedelta(days=1)
+wait_until = now.replace(hour=6, minute=59, second=55, microsecond=0)
+wait_until += datetime.timedelta(days=1)
 
 seconds_to_wait = (wait_until - now).total_seconds()
 print('start sleep')
 time.sleep(seconds_to_wait)
-'''
+
 session = requests.Session()
 session.headers.update(headers)
 session.cookies.update(cookies)
 session.get('https://ehall.bjut.edu.cn')
-'''
+
 while True:
     now = datetime.datetime.now()
     if now >= target_time:
         break
-'''
-yuyue_all()
 
-
-
+now = datetime.datetime.now()
+print(now)
+response = session.post(url, data=data)
+now = datetime.datetime.now()
+print(now)
+print("Response Text:", response.text)
